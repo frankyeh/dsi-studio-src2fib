@@ -1,0 +1,28 @@
+#!/bin/bash
+#PBS -l nodes=1:ppn=1
+#PBS -l vmem=8gb
+#PBS -l walltime=1:00:00
+#PBS -N dsi-studio-src2fib
+
+set -e  
+
+src=$(jq -r .src config.json)
+qsdr=$(jq -r .qsdr config.json)
+length_ratio=$(jq -r .length_ratio config.json)
+
+# create symbolic link here
+src_base_name=${src##*/}
+rm -f ${src_base_name}
+ln -s ${src} ${src_base_name}
+
+if [ -z ${qsdr} ]
+then
+    time singularity exec -e docker://dsistudio/dsistudio dsi_studio --action=rec --source=${src_base_name} --cmd="[Step T2][Edit][Rotate to MNI2]" --method=4 --param0=${length_ratio}
+else
+    time singularity exec -e docker://dsistudio/dsistudio dsi_studio --action=rec --source=${src_base_name} --method=7 --param0=${length_ratio} --record_odf=1
+fi
+
+
+# move file to fib folder
+mkdir -p fib
+mv *.fib.gz fib/fib.gz
