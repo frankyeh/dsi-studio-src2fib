@@ -15,6 +15,7 @@ src_base_name=${src##*/}
 rm -f ${src_base_name}
 ln -s ${src} ${src_base_name}
 
+echo "qsdr=${qsdr}"
 if [ $qsdr ]
 then
     time singularity exec -e docker://dsistudio/dsistudio dsi_studio --action=rec --source=${src_base_name} --method=7 --param0=${length_ratio} --record_odf=1
