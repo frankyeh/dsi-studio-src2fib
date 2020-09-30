@@ -19,7 +19,7 @@ then
     time singularity exec -e docker://dsistudio/dsistudio dsi_studio --action=rec --source=${src_base_name} --method=7 --param0=${length_ratio} --record_odf=1
     echo "{\"datatype_tags\": [\"qsdr-odf\"]}" > product.json
 else
-    time singularity exec -e docker://dsistudio/dsistudio dsi_studio --action=rec --source=${src_base_name} --cmd="[Step T2][Edit][Rotate to MNI2]" --method=4 --param0=${length_ratio}
+    time singularity exec -e docker://dsistudio/dsistudio dsi_studio --action=rec --source=${src_base_name} --method=4 --param0=${length_ratio}
 fi
 
 
